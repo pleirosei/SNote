@@ -17,7 +17,7 @@ class NoteStore {
         return Static.instance
     }
     
-    private var notes : [Note]!
+    private var notes : NSMutableArray! = NSMutableArray()
     
     private init() {
         load()
@@ -25,14 +25,30 @@ class NoteStore {
     
     // MARK: - Crud Methods - Create, Read, Update, Delete
     
-    func createNote() -> Note {
-        var note = Note()
-        notes.append(note)
-        return note
+    
+    func fetchAllObjects() {
+        var query : PFQuery = PFQuery(className: "Note")
+        
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if (error == nil) {
+                
+                self.fetchAllObjects()
+                
+            } else {
+                println(error.description)
+            }
+        }
     }
     
+    
+    func createNote() -> Note {
+        var note = Note()
+        note.save()
+        return note
+    }
+
     func createNote(theNote:Note) {
-        notes.append(theNote)
+        theNote.save()
     }
     
     func count() -> Int {
@@ -40,13 +56,13 @@ class NoteStore {
     }
     
     func getNote(index:Int) -> Note {
-        return notes[index]
+        return notes[index] as Note
     }
     
     // update goes here, but not needed since we are passing everything by ref
     
     func delete(index:Int) {
-      notes.removeAtIndex(index)
+        notes.removeObjectAtIndex(index)
     }
     
     // Mark: - Persistence
@@ -67,15 +83,10 @@ class NoteStore {
         NSKeyedArchiver.archiveRootObject(notes, toFile: archiveFilePath())
     }
     
-    func load() {
-        let filePath = archiveFilePath()
-        let fileManager = NSFileManager.defaultManager()
+    func load() -> PFQuery! {
+        var query = Note.query()
         
-        if fileManager.fileExistsAtPath(filePath) {
-            notes = NSKeyedUnarchiver.unarchiveObjectWithFile(filePath) as [Note]
-        } else {
-            notes = [Note]()
-        }
+        return query
     }
 }
 

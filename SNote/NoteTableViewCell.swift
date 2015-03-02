@@ -18,7 +18,7 @@ class NoteTableViewCell: UITableViewCell {
     func setupCell(theNote:Note) {
         noteTitle.text = theNote.title
         noteText.text = theNote.text
-        noteDate.text = theNote.shortDate
+//        noteDate.text = theNote.shortDate
     }
 
 }

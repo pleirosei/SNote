@@ -21,13 +21,13 @@ class Note : PFObject, PFSubclassing {
         super.init()
     }
     
-    var noteTitle : String {
-        get { return objectForKey("noteTitle") as Note }
-        set { setObject(newValue, forKey: "noteTitle") }
+    var title : String? {
+        get { return objectForKey("title") as String? }
+        set { setObject(newValue, forKey: "title") }
     }
     
-    var noteBody : String {
-        get { return objectForKey("noteBody") as Note }
+    var text : String? {
+        get { return objectForKey("noteBody") as String? }
         set { setObject(newValue, forKey: "noteBody") }
     }
     

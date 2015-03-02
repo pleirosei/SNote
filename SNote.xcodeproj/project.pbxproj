@@ -11,6 +11,7 @@
 		674F081C1AA4D3A400996B8E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081A1AA4D3A400996B8E /* Parse.framework */; };
 		674F081F1AA4D3C100996B8E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081D1AA4D3C100996B8E /* libsqlite3.dylib */; };
 		674F08201AA4D3C100996B8E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081E1AA4D3C100996B8E /* libz.dylib */; };
+		675352031AA4EF8D00B39577 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 675352021AA4EF8D00B39577 /* ParseUI.framework */; };
 		A302D9481A87E88B0032B1D2 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302D9471A87E88B0032B1D2 /* NoteTableViewCell.swift */; };
 		A311827D1A87C5500017D317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A311827C1A87C5500017D317 /* AppDelegate.swift */; };
 		A31182821A87C5500017D317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A31182801A87C5500017D317 /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 		674F081A1AA4D3A400996B8E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		674F081D1AA4D3C100996B8E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		674F081E1AA4D3C100996B8E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		675352021AA4EF8D00B39577 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		A302D9471A87E88B0032B1D2 /* NoteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
 		A31182771A87C5500017D317 /* SNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A311827B1A87C5500017D317 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 			files = (
 				674F081F1AA4D3C100996B8E /* libsqlite3.dylib in Frameworks */,
 				674F08201AA4D3C100996B8E /* libz.dylib in Frameworks */,
+				675352031AA4EF8D00B39577 /* ParseUI.framework in Frameworks */,
 				674F081C1AA4D3A400996B8E /* Parse.framework in Frameworks */,
 				674F081B1AA4D3A400996B8E /* Bolts.framework in Frameworks */,
 			);
@@ -59,6 +62,7 @@
 		674F08181AA4D38100996B8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				675352021AA4EF8D00B39577 /* ParseUI.framework */,
 				674F08191AA4D3A400996B8E /* Bolts.framework */,
 				674F081A1AA4D3A400996B8E /* Parse.framework */,
 			);
