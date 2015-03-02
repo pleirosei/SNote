@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		674F081B1AA4D3A400996B8E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F08191AA4D3A400996B8E /* Bolts.framework */; };
+		674F081C1AA4D3A400996B8E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081A1AA4D3A400996B8E /* Parse.framework */; };
+		674F081F1AA4D3C100996B8E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081D1AA4D3C100996B8E /* libsqlite3.dylib */; };
+		674F08201AA4D3C100996B8E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F081E1AA4D3C100996B8E /* libz.dylib */; };
 		A302D9481A87E88B0032B1D2 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302D9471A87E88B0032B1D2 /* NoteTableViewCell.swift */; };
 		A311827D1A87C5500017D317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A311827C1A87C5500017D317 /* AppDelegate.swift */; };
 		A31182821A87C5500017D317 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A31182801A87C5500017D317 /* Main.storyboard */; };
@@ -19,6 +23,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		674F08151AA4D33400996B8E /* SNote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SNote-Bridging-Header.h"; sourceTree = "<group>"; };
+		674F08191AA4D3A400996B8E /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		674F081A1AA4D3A400996B8E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		674F081D1AA4D3C100996B8E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		674F081E1AA4D3C100996B8E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A302D9471A87E88B0032B1D2 /* NoteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
 		A31182771A87C5500017D317 /* SNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A311827B1A87C5500017D317 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -37,15 +46,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				674F081F1AA4D3C100996B8E /* libsqlite3.dylib in Frameworks */,
+				674F08201AA4D3C100996B8E /* libz.dylib in Frameworks */,
+				674F081C1AA4D3A400996B8E /* Parse.framework in Frameworks */,
+				674F081B1AA4D3A400996B8E /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		674F08181AA4D38100996B8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				674F08191AA4D3A400996B8E /* Bolts.framework */,
+				674F081A1AA4D3A400996B8E /* Parse.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A311826E1A87C5500017D317 = {
 			isa = PBXGroup;
 			children = (
+				674F081D1AA4D3C100996B8E /* libsqlite3.dylib */,
+				674F081E1AA4D3C100996B8E /* libz.dylib */,
 				A31182791A87C5500017D317 /* SNote */,
 				A31182781A87C5500017D317 /* Products */,
 			);
@@ -62,6 +86,7 @@
 		A31182791A87C5500017D317 /* SNote */ = {
 			isa = PBXGroup;
 			children = (
+				674F08181AA4D38100996B8E /* Frameworks */,
 				A338EF6E1A87DF680006D13D /* Models */,
 				A311827C1A87C5500017D317 /* AppDelegate.swift */,
 				A311829C1A87C8950017D317 /* NotesTableViewController.swift */,
@@ -80,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				A311827B1A87C5500017D317 /* Info.plist */,
+				674F08151AA4D33400996B8E /* SNote-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -275,10 +301,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SNote",
+				);
 				INFOPLIST_FILE = SNote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SNote/SNote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -286,10 +319,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SNote",
+				);
 				INFOPLIST_FILE = SNote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SNote/SNote-Bridging-Header.h";
 			};
 			name = Release;
 		};
