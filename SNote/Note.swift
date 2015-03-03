@@ -19,6 +19,9 @@ class Note : PFObject, PFSubclassing {
     
     override init() {
         super.init()
+        title = ""
+        text = ""
+        date = NSDate()
     }
     
     var title : String? {
@@ -27,8 +30,19 @@ class Note : PFObject, PFSubclassing {
     }
     
     var text : String? {
-        get { return objectForKey("noteBody") as String? }
-        set { setObject(newValue, forKey: "noteBody") }
+        get { return objectForKey("text") as String? }
+        set { setObject(newValue, forKey: "text") }
+    }
+    
+    var date : NSDate {
+        get { return objectForKey("date") as NSDate }
+        set { setObject(newValue, forKey: "date") }
+    }
+    
+    var shortDate: String {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        return formatter.stringFromDate(date)
     }
     
 }

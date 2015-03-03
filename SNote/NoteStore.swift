@@ -44,11 +44,13 @@ class NoteStore {
     func createNote() -> Note {
         var note = Note()
         note.save()
+        notes.addObject(note)
         return note
     }
 
     func createNote(theNote:Note) {
         theNote.save()
+        notes.addObject(theNote)
     }
     
     func count() -> Int {
@@ -56,7 +58,7 @@ class NoteStore {
     }
     
     func getNote(index:Int) -> Note {
-        return notes[index] as Note
+        return notes.objectAtIndex(index) as Note
     }
     
     // update goes here, but not needed since we are passing everything by ref

@@ -15,28 +15,28 @@ class NotesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        var nicole = Note()
-//        nicole.title = "Nicole"
-//        nicole.text = "My lovely wife."
-//        
-//        var joanna = Note()
-//        joanna.title = "Joanna"
-//        joanna.text = "My lovely daughter"
-//        
-//        var adoniah = Note()
-//        adoniah.title = "Adoniah"
-//        adoniah.text = "My wonderful son"
-//        
-//        // add notes to the array
-//        noteStore.createNote(nicole)
-//        noteStore.createNote(joanna)
-//        noteStore.createNote(adoniah)
+        //        var nicole = Note()
+        //        nicole.title = "Nicole"
+        //        nicole.text = "My lovely wife."
+        //
+        //        var joanna = Note()
+        //        joanna.title = "Joanna"
+        //        joanna.text = "My lovely daughter"
+        //
+        //        var adoniah = Note()
+        //        adoniah.title = "Adoniah"
+        //        adoniah.text = "My wonderful son"
+        //
+        //        // add notes to the array
+        //        noteStore.createNote(nicole)
+        //        noteStore.createNote(joanna)
+        //        noteStore.createNote(adoniah)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem()
     }
     
     // MARK: - Table view data source
@@ -76,11 +76,11 @@ class NotesTableViewController: UITableViewController {
     
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-        noteStore.delete(indexPath.row)
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    }
+        if editingStyle == .Delete {
+            // Delete the row from the data source
+            noteStore.delete(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
     }
     
     
@@ -136,6 +136,7 @@ class NotesTableViewController: UITableViewController {
             
             // update the screen
             var alert = UIAlertController(title: "Alert", message: "Note Saved", preferredStyle: UIAlertControllerStyle.Alert)
+            
             
             let lastRow = NSIndexPath(forRow: noteStore.count() - 1, inSection: 0)
             tableView.insertRowsAtIndexPaths([lastRow], withRowAnimation: UITableViewRowAnimation.Automatic)
