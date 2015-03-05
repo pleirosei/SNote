@@ -17,40 +17,51 @@ class NoteStore {
         return Static.instance
     }
     
-    private var notes : NSMutableArray! = NSMutableArray()
+    private var notes: [AnyObject]! = [AnyObject]()
     
     private init() {
-        load()
     }
     
     // MARK: - Crud Methods - Create, Read, Update, Delete
     
+    // "completeion" portion makes TableView reload after background data loads
     
-    func fetchAllObjects() {
-        var query : PFQuery = PFQuery(className: "Note")
-        
+    func fetchAllObjects(completion:(()->())?) {
+        var query = PFQuery(className: "Note")
+        query.whereKeyExists("objectId")
+        query.includeKey("createdAt")
         query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if (error == nil) {
+            if error == nil {
+                println("Successfully retrieved \(objects.count) results")
                 
-                self.fetchAllObjects()
+                if let objects = objects as? [PFObject] {
+                    for object in objects {
+                        var index: Int = 0
+                        
+                        self.notes.append(object)
+                        println("\(self.notes[index])")
+                        ++index
+                    }
+                }
                 
-            } else {
-                println(error.description)
+                completion?()
+                
             }
         }
+    
     }
     
     
     func createNote() -> Note {
         var note = Note()
         note.save()
-        notes.addObject(note)
+        notes.append(note)
         return note
     }
 
     func createNote(theNote:Note) {
-        theNote.save()
-        notes.addObject(theNote)
+        notes.append(theNote)
+        theNote.saveInBackgroundWithBlock(nil)
     }
     
     func count() -> Int {
@@ -58,13 +69,21 @@ class NoteStore {
     }
     
     func getNote(index:Int) -> Note {
-        return notes.objectAtIndex(index) as Note
+        return notes[index] as Note
     }
     
     // update goes here, but not needed since we are passing everything by ref
     
+    func updateNote(index:Int) {
+        var theNote: Note
+        var temp: Note = notes[index] as Note
+        theNote = temp
+        theNote.saveInBackgroundWithBlock(nil)
+        return notes[index] = theNote
+    }
+    
     func delete(index:Int) {
-        notes.removeObjectAtIndex(index)
+        notes.removeAtIndex(index)
     }
     
     // Mark: - Persistence
@@ -83,12 +102,6 @@ class NoteStore {
     
     func save() {
         NSKeyedArchiver.archiveRootObject(notes, toFile: archiveFilePath())
-    }
-    
-    func load() -> PFQuery! {
-        var query = Note.query()
-        
-        return query
     }
 }
 

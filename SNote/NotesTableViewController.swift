@@ -10,7 +10,7 @@ import UIKit
 
 class NotesTableViewController: UITableViewController {
     
-    let noteStore = NoteStore.shared()
+    var noteStore = NoteStore.shared()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +35,9 @@ class NotesTableViewController: UITableViewController {
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.        
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        loadNotes()
     }
     
     // MARK: - Table view data source
@@ -47,12 +48,29 @@ class NotesTableViewController: UITableViewController {
         return noteStore.count()
     }
     
+    func loadNotes() {
+        // Causes the Tableview to load after fetching data in background
+        
+        self.noteStore.fetchAllObjects { () -> () in
+            self.tableView.reloadData()
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("NoteCell", forIndexPath: indexPath) as NoteTableViewCell
+    
+        
+//        var object: PFObject = noteStore.getNote(indexPath.row) as PFObject
+//        
+//        cell.noteTitle?.text = object["title"] as? String
+//        cell.noteText?.text = object["text"] as? String
+//        
         
         // Configure the cell...
         let rowNumber = indexPath.row
         let theNote = noteStore.getNote(rowNumber)
+//        var theNote: PFObject = noteStore.getNote(rowNumber) as PFObject
+        
         
         cell.setupCell(theNote)
         
@@ -124,6 +142,7 @@ class NotesTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow() {
             // Must be editing a row
             
+            noteStore.updateNote(indexPath.row)
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
         } else {
             // Must be adding a row

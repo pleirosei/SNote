@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NoteTableViewCell: UITableViewCell {
+class NoteTableViewCell: PFTableViewCell {
 
     
     @IBOutlet weak var noteTitle: UILabel!
@@ -16,8 +16,8 @@ class NoteTableViewCell: UITableViewCell {
     @IBOutlet weak var noteText: UILabel!
 
     func setupCell(theNote:Note) {
-        noteTitle.text = theNote.title
-        noteText.text = theNote.text
+        noteTitle.text = theNote["title"] as? String
+        noteText.text = theNote["text"] as? String
         noteDate.text = theNote.shortDate
     }
 
