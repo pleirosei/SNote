@@ -42,7 +42,7 @@ class Note : PFObject, PFSubclassing {
     var shortDate: String {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        return formatter.stringFromDate(date!)
+        return formatter.stringFromDate(createdAt!)
     }
     
 }

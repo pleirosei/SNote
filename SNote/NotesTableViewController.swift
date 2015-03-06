@@ -8,12 +8,34 @@
 
 import UIKit
 
-class NotesTableViewController: UITableViewController {
+class NotesTableViewController: PFQueryTableViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.parseClassName = "Note"
+    }
+    
+    
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var noteStore = NoteStore.shared()
     
+    var searchActive: Bool = false
+    var data = [Note]()
+    
+    var searchText = ""
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /* Setup delegates */
+        
+//        tableView.delegate = self
+//        tableView.dataSource = self
+//        searchBar.delegate = self
         
         //        var nicole = Note()
         //        nicole.title = "Nicole"
@@ -41,13 +63,13 @@ class NotesTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return noteStore.count()
-    }
-    
+//    
+//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete method implementation.
+//        // Return the number of rows in the section.
+//        return noteStore.count()
+//    }
+//    
     func loadNotes() {
         // Causes the Tableview to load after fetching data in background
         
@@ -56,9 +78,9 @@ class NotesTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!, object: PFObject!) -> PFTableViewCell! {
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("NoteCell", forIndexPath: indexPath) as NoteTableViewCell
-    
         
 //        var object: PFObject = noteStore.getNote(indexPath.row) as PFObject
 //        
@@ -68,7 +90,7 @@ class NotesTableViewController: UITableViewController {
         
         // Configure the cell...
         let rowNumber = indexPath.row
-        let theNote = noteStore.getNote(rowNumber)
+        let theNote = object as Note //noteStore.getNote(rowNumber)
 //        var theNote: PFObject = noteStore.getNote(rowNumber) as PFObject
         
         
@@ -162,5 +184,53 @@ class NotesTableViewController: UITableViewController {
             
         }
     }
+    
+    
+     
+    
+        override func queryForTable() -> PFQuery! {
+        if searchText.isEmpty {
+            var query = Note.query()
+            
+            return query
+        } else {
+            var query = Note.query()
+            query.whereKey("title", containsString: searchText.lowercaseString)
+            println(searchText.lowercaseString)
+            
+            return query
+        }
+    }
+    
+    
+    
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        // reset state
+        searchBar.text = nil
+        searchText = ""
+        // Hide the keyboard
+        searchBar.resignFirstResponder()
+        // reload data
+        self.loadObjects()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        // save state
+        searchText = searchBar.text
+        // hide keyboard
+        searchBar.resignFirstResponder()
+        // reload data
+        self.loadObjects()
+    }
+
     
 }

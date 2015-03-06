@@ -13,6 +13,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" text="" placeholder="Search Your Notes" id="vyA-Wp-DgD">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="BDL-Yt-feW" id="qRB-Tz-c2Z"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoteCell" rowHeight="100" id="0B5-ZV-AHY" customClass="NoteTableViewCell" customModule="SNote" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -80,6 +88,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="vyA-Wp-DgD" id="emx-K1-G8V"/>
+                        <outlet property="tableView" destination="V7z-IJ-GM0" id="45h-AI-thw"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ACN-2U-qS5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
