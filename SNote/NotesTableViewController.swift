@@ -115,11 +115,20 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     
     
     // Override to support editing the table view.
+//    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//        if editingStyle == .Delete {
+//            // Delete the row from the data source
+//            noteStore.delete(indexPath.row)
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+//        }
+//    }
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // Delete the row from the data source
-            noteStore.delete(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            var object: PFObject = self.objects[indexPath.row] as PFObject
+            object.deleteInBackgroundWithBlock({ (succeded, error) -> Void in
+                self.loadObjects()
+            })
         }
     }
     
@@ -153,9 +162,15 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         if let indexPath = tableView.indexPathForSelectedRow() {
             
             let rowNumber = indexPath.row
-            let theNote = noteStore.getNote(rowNumber)
             
-            noteDetailViewController.theNote = theNote
+            var object: PFObject = self.objects[indexPath.row] as PFObject
+            object.saveInBackgroundWithBlock({ (suceed, error) -> Void in
+                self.loadObjects()
+            })
+            
+//            let theNote = noteStore.getNote(rowNumber)
+            
+            noteDetailViewController.theNote = object
         }
     }
     
@@ -164,16 +179,23 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         if let indexPath = tableView.indexPathForSelectedRow() {
             // Must be editing a row
             
-            noteStore.updateNote(indexPath.row)
+            var object: PFObject = self.objects[indexPath.row] as PFObject
+            object.saveInBackgroundWithBlock({ (succeed, error) -> Void in
+                self.loadObjects()
+            })
+//            noteStore.updateNote(indexPath.row)
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
         } else {
             // Must be adding a row
             let noteDetailViewController = segue.sourceViewController as NoteDetailViewController
             
-            let theNote = noteDetailViewController.theNote
+            let theNote: PFObject = noteDetailViewController.theNote
             
             // save the note
-            noteStore.createNote(theNote)
+            theNote.saveInBackgroundWithBlock({ (success, error) -> Void in
+                self.loadObjects()
+            })
+//            noteStore.createNote(theNote)
             
             // update the screen
             var alert = UIAlertController(title: "Alert", message: "Note Saved", preferredStyle: UIAlertControllerStyle.Alert)
