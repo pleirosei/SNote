@@ -11,7 +11,7 @@ import UIKit
 class NoteDetailViewController: UIViewController {
     
     
-    var theNote = PFObject()
+    var theNote = Note()
     
     
     @IBOutlet weak var noteTitle: UITextField!
@@ -24,8 +24,8 @@ class NoteDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        noteTitle.text = theNote["title"] as String
-        noteText.text = theNote["text"] as String
+        noteTitle.text = theNote.title
+        noteText.text = theNote.text
         
         noteText.becomeFirstResponder() // makes body first responder.
         
@@ -46,8 +46,8 @@ class NoteDetailViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
-        theNote["title"] = noteTitle.text
-        theNote["text"] = noteText.text
+        theNote.title = noteTitle.text
+        theNote.text = noteText.text
     }
     
     

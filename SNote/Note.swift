@@ -24,18 +24,23 @@ class Note : PFObject, PFSubclassing {
         date = NSDate()
     }
     
-    var title : String? {
-        get { return objectForKey("title") as String? }
-        set { setObject(newValue, forKey: "title") }
+    var title : String {
+        get { return objectForKey("title") as? String ?? "" }
+        set {
+            setObject(newValue, forKey: "title")
+            setObject(newValue.lowercaseString, forKey: "lowercaseTitle")
+        }
     }
     
-    var text : String? {
-        get { return objectForKey("text") as String? }
-        set { setObject(newValue, forKey: "text") }
+    var text : String {
+        get { return objectForKey("text") as? String ?? "" }
+        set { setObject(newValue, forKey: "text")
+              setObject(newValue.lowercaseString, forKey: "lowercaseText")
+        }
     }
     
-    var date : NSDate? {
-        get { return objectForKey("date") as NSDate? }
+    var date : NSDate {
+        get { return objectForKey("date") as NSDate }
         set { setObject(newValue, forKey: "date") }
     }
     

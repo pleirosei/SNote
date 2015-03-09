@@ -13,7 +13,7 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.parseClassName = "Note"
+        self.parseClassName = Note().parseClassName
     }
     
     
@@ -30,6 +30,7 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         /* Setup delegates */
         
@@ -170,11 +171,12 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
             
 //            let theNote = noteStore.getNote(rowNumber)
             
-            noteDetailViewController.theNote = object
+            noteDetailViewController.theNote = object as Note
         }
     }
     
     @IBAction func saveNote(segue:UIStoryboardSegue) {
+        
         
         if let indexPath = tableView.indexPathForSelectedRow() {
             // Must be editing a row
@@ -186,23 +188,29 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
 //            noteStore.updateNote(indexPath.row)
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
         } else {
+            
             // Must be adding a row
             let noteDetailViewController = segue.sourceViewController as NoteDetailViewController
             
-            let theNote: PFObject = noteDetailViewController.theNote
+            let theNote = noteDetailViewController.theNote
             
             // save the note
             theNote.saveInBackgroundWithBlock({ (success, error) -> Void in
-                self.loadObjects()
+                if success {
+                    self.loadObjects()
+                    
+//                    let lastRow = NSIndexPath(forRow: self.objects.count - 1, inSection: 0)
+//                    self.tableView.insertRowsAtIndexPaths([lastRow], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    
+                }
             })
 //            noteStore.createNote(theNote)
             
             // update the screen
+            
             var alert = UIAlertController(title: "Alert", message: "Note Saved", preferredStyle: UIAlertControllerStyle.Alert)
             
             
-            let lastRow = NSIndexPath(forRow: noteStore.count() - 1, inSection: 0)
-            tableView.insertRowsAtIndexPaths([lastRow], withRowAnimation: UITableViewRowAnimation.Automatic)
             
         }
     }
@@ -213,16 +221,23 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         override func queryForTable() -> PFQuery! {
         if searchText.isEmpty {
             var query = Note.query()
-            
+
             return query
         } else {
             var query = Note.query()
-            query.whereKey("title", containsString: searchText.lowercaseString)
+            query.whereKey("lowercaseTitle", containsString: searchText.lowercaseString)
             println(searchText.lowercaseString)
             
             return query
         }
     }
+    
+
+    
+
+
+    
+
     
     
     
