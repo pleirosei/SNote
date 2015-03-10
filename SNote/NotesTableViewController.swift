@@ -22,8 +22,6 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     
     var noteStore = NoteStore.shared()
     
-    var searchActive: Bool = false
-    var data = [Note]()
     
     var searchText = ""
     
@@ -218,29 +216,69 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     
      
     
-        override func queryForTable() -> PFQuery! {
+    override func queryForTable() -> PFQuery! {
         if searchText.isEmpty {
             var query = Note.query()
-
+            
             return query
         } else {
             var query = Note.query()
+            var query1 = Note.query()
             query.whereKey("lowercaseTitle", containsString: searchText.lowercaseString)
+            query1.whereKey("lowercaseText", containsString: searchText.lowercaseString)
             println(searchText.lowercaseString)
             
-            return query
+            var fullQuery = PFQuery.orQueryWithSubqueries([query, query1])
+            
+            return fullQuery
         }
     }
     
-
+    
+    
+    // Single Query
+    
+//    override func queryForTable() -> PFQuery! {
+//        if searchText.isEmpty {
+//            var query = Note.query()
+//            
+//            return query
+//        } else {
+//            var query = Note.query()
+////            var query1 = Note.query()
+//            query.whereKey("lowercaseTitle", containsString: searchText.lowercaseString)
+////            query1.whereKey("lowercaseText", containsString: searchText.lowercaseString)
+//            println(searchText.lowercaseString)
+//            
+////            var fullQuery = PFQuery.orQueryWithSubqueries([query, query1])
+//            
+//            return query
+//        }
+//    }
+    
     
 
-
+    
+    
+//    override func queryForTable() -> PFQuery! {
+//        var noteTitle = Note.query()
+//        noteTitle.whereKey("lowercaseTitle", containsString: searchText.lowercaseString)
+//        
+//        var noteText = Note.query()
+//        noteText.whereKey("lowercaseText", containsString: searchText.lowercaseString)
+//        
+//        if searchText.isEmpty {
+//            return Note.query()
+//        } else {
+//            var noteCheck = PFQuery.orQueryWithSubqueries([noteTitle, noteText]) as PFQuery
+//            
+//            return noteCheck
+//        }
+//    }
     
 
-    
-    
-    
+
+
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchBar.showsCancelButton = true
