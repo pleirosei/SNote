@@ -21,7 +21,6 @@ class Note : PFObject, PFSubclassing {
         super.init()
 //        title = ""
 //        text = ""
-        date = NSDate()
     }
     
     var title : String {
@@ -40,7 +39,7 @@ class Note : PFObject, PFSubclassing {
     }
     
     var date : NSDate {
-        get { return objectForKey("date") as NSDate }
+        get { return objectForKey("date") as? NSDate ?? NSDate()}
         set { setObject(newValue, forKey: "date") }
     }
     
