@@ -16,7 +16,7 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         self.parseClassName = Note().parseClassName
     }
     
-    
+
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -30,28 +30,10 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         super.viewDidLoad()
         
         
-        /* Setup delegates */
         
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        searchBar.delegate = self
         
-        //        var nicole = Note()
-        //        nicole.title = "Nicole"
-        //        nicole.text = "My lovely wife."
-        //
-        //        var joanna = Note()
-        //        joanna.title = "Joanna"
-        //        joanna.text = "My lovely daughter"
-        //
-        //        var adoniah = Note()
-        //        adoniah.title = "Adoniah"
-        //        adoniah.text = "My wonderful son"
-        //
-        //        // add notes to the array
-        //        noteStore.createNote(nicole)
-        //        noteStore.createNote(joanna)
-        //        noteStore.createNote(adoniah)
+        
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -61,14 +43,26 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         loadNotes()
     }
     
+ 
+    
+    
     // MARK: - Table view data source
-//    
+    
+
+   
+    
+    
+    
+    
+    
+    
 //    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        // #warning Incomplete method implementation.
 //        // Return the number of rows in the section.
-//        return noteStore.count()
+//        
+//        return 12
 //    }
-//    
+    
     func loadNotes() {
         // Causes the Tableview to load after fetching data in background
         
@@ -77,26 +71,95 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         }
     }
     
+    private class SectionData {
+        var month = 0
+        var year = 0
+        var rows = [Note]()
+        init(month:Int, year:Int) {
+            self.month = month
+            self.year = year
+        }
+    }
+    
+    private var sections = [SectionData]()
+
+ 
+    override func objectsDidLoad(error: NSError!) {
+        
+       
+        
+        sectionTheData()
+        
+        super.objectsDidLoad(error)
+        
+    }
+    
+    
+    func sectionTheData() {
+        
+        
+        
+        var counter = Int()
+        counter++
+        println(counter)
+        
+        var lastMonth = 0
+        var lastYear = 0
+        var currentSection : SectionData!
+        sections.removeAll(keepCapacity: true)
+
+        
+        println(self.objects.count)
+    
+        for object in self.objects {
+            if let theDate = object.createdAt {
+                // Break createdAt date into it's fundamental components
+                let components = NSCalendar.currentCalendar().components(NSCalendarUnit.DayCalendarUnit | NSCalendarUnit.MonthCalendarUnit | NSCalendarUnit.YearCalendarUnit, fromDate: theDate)
+                // Everytime we encounter a new month/year combination....
+                if lastMonth != components.month || lastYear != components.year {
+                    // Tada, found a new section!!!!
+                    
+                    // Create a placeholder for that section
+                    currentSection = SectionData(month:components.month, year:components.year)
+                    // Add it to our total sections
+                    sections.append(currentSection)
+                    // watch for next section change
+                    lastMonth = components.month
+                    lastYear = components.year
+                }
+                // add the current note to the current section
+                currentSection.rows.append(object as Note)
+            }
+        }
+        
+    }
+    
+    override func objectAtIndexPath(indexPath: NSIndexPath!) -> PFObject! {
+        
+        return sections[indexPath.section].rows[indexPath.row]
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if sections.count == 0  { return "" }
+        let sectionData = sections[section]
+        
+        return "\(sectionData.month) - \(sectionData.year)"
+    }
+    
+    
     override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!, object: PFObject!) -> PFTableViewCell! {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("NoteCell", forIndexPath: indexPath) as NoteTableViewCell
         
-//        var object: PFObject = noteStore.getNote(indexPath.row) as PFObject
-//        
-//        cell.noteTitle?.text = object["title"] as? String
-//        cell.noteText?.text = object["text"] as? String
-//        
+        
+        
+
         
         // Configure the cell...
         let rowNumber = indexPath.row
-        let theNote = object as Note //noteStore.getNote(rowNumber)
-//        var theNote: PFObject = noteStore.getNote(rowNumber) as PFObject
-        
+        let theNote = object as Note
         
         cell.setupCell(theNote)
-        
-        //        cell.textLabel?.text = theNote.title
-        
         
         
         
@@ -126,7 +189,7 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
         if editingStyle == .Delete {
             var object: PFObject = self.objects[indexPath.row] as PFObject
             object.deleteInBackgroundWithBlock({ (succeded, error) -> Void in
-                self.loadObjects()
+            self.loadObjects()
             })
         }
     }
@@ -214,12 +277,14 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
     }
     
     
+    
      
     
     override func queryForTable() -> PFQuery! {
         if searchText.isEmpty {
             var query = Note.query()
-            
+            query.orderByDescending("createdAt")
+                        
             return query
         } else {
             var query = Note.query()
@@ -233,6 +298,7 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
             return fullQuery
         }
     }
+    
     
     
     
@@ -276,6 +342,17 @@ class NotesTableViewController: PFQueryTableViewController, UITableViewDataSourc
 //        }
 //    }
     
+    
+    
+    
+    /* Grouping by Month
+    
+    First, you need to create an array of section headers, one for each unique month/year in your collection.
+    Next, you need to pass in the secton number to this function,
+    and return only those records in that section.  Alternatively you could create
+    a two-dimensional array or dictionary....
+
+    */
 
 
 

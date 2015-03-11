@@ -15,9 +15,10 @@ class NoteTableViewCell: PFTableViewCell {
     @IBOutlet weak var noteDate: UILabel!
     @IBOutlet weak var noteText: UILabel!
 
+    
     func setupCell(theNote:Note) {
-        noteTitle.text = theNote["title"] as? String
-        noteText.text = theNote["text"] as? String
+        noteTitle.text = theNote.title
+        noteText.text = theNote.text
         noteDate.text = theNote.shortDate
     }
 
